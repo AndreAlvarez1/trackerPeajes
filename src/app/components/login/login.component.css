@@ -1,0 +1,18 @@
+.contenedorLogin{
+    height: 100vh;
+}
+
+
+.login{
+    margin-top:160px;
+}
+
+.formu{
+    padding:100px 20px;
+}
+
+
+.loading{
+    text-align: center;
+    padding:100px 20px;
+}

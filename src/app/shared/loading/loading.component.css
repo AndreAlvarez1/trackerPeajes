@@ -1,0 +1,9 @@
+.loading{
+    padding-top:20%;
+    text-align: center;
+    color:white;
+}
+
+.loading h1{
+    font-weight: 700;
+}

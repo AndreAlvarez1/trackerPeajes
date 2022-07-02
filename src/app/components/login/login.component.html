@@ -1,0 +1,48 @@
+<div class="row bgGris contenedorLogin" style="margin:0">
+
+        <div class="col-10 offset-1 col-md-4 offset-md-4 login">
+            <img src="assets/images/logo.svg" style="margin-bottom:40px">
+            <div class="row bgAmarillo formu animate__animated animate__flipInY">
+                <div class="col-12">
+                       
+                <form *ngIf="!loading" (ngSubmit)="login(form)" #form="ngForm" class="row validate-form ">
+                    <div class="col-10 offset-1">
+                        <label>Mail</label>
+                        <span *ngIf="form.submitted && form.controls['email'].errors" class="error">Debes ingresar un correo por favor</span>
+                        <input class="form-control " type="text" name="email" required email [(ngModel)]="user.email" placeholder="Email">
+                    </div>
+        
+                    <div class="col-10 offset-1 mt-4" data-validate="Password is required">
+                        <label>Password</label>
+                        <span *ngIf="form.submitted && form.controls['password'].errors" class="error">Debes ingresar un password por favor</span>
+                        <input class="form-control" type="password" name="password" required minlength="6" [(ngModel)]="user.password" placeholder="Password">
+                    </div>
+
+                    <div class="col-10 offset-1 col-md-6 offset-md-3 campo">
+
+                        <button class="btn btnGris w-100 mt-4"  type="submit">
+                        Loguearse
+                    </button>
+                    </div>
+                </form>
+
+                <div *ngIf="!loading" class="row">
+                    <div class="col-12 text-center mt-2">
+                        <p *ngIf="!recordar" (click)="recordar = !recordar" class="pointer"><i class="fa-regular fa-square animate__animated animate__flipInX"></i> Recordar Datos</p>
+                        <p *ngIf="recordar" (click)="recordar = !recordar" class="pointer"><i class="fa-solid fa-square-check animate__animated animate__flipInX"></i> Recordar Datos</p>
+                    </div>
+                </div>
+             
+
+                <div *ngIf="loading" class="row loading  animate__animated animate__fadeIn">
+                    <div class="col-12">
+                        <i class="fa-solid fa-car-side fa-2x fa-beat-fade"></i>
+                        <p>Verificando Usuario</p>
+                    </div>
+                </div>
+
+                
+                </div>
+            </div>
+        </div>
+</div>

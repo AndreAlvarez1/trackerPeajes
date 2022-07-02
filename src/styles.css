@@ -1,1 +1,45 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'animate.css';
+
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@200;400;700&display=swap');
+
+*{
+    font-family: 'Titillium Web', sans-serif;
+}
+
+.bgGris{
+    background-color: #1E2328;
+}
+
+.bgGris2{
+    background-color: #EBEAE8;
+}
+
+.bgAmarillo{
+    background-color: #F4B301;
+}
+
+.btnGris{
+    background-color: #1E2328;
+    color: white;
+}
+
+.pad20{
+    padding:20px;
+}
+
+.pointer{
+    cursor: pointer;
+}
+
+
+
+.fondoModif {
+    background-color: rgba(0, 5, 46, 0.6);
+    position: fixed;
+    top: 0;
+    z-index: 1040;
+    height: 100vh;
+    width: 100%;
+    margin-left: 0;
+}
