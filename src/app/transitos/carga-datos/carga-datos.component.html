@@ -11,9 +11,11 @@
 <div class="row bgGris2 pad20">
     <div class="col-12 col-md-4">
         <h2>AutoPista Central</h2>
-        <label>No Facturados</label>
+        <label>Facturados</label>
         <input class="form-control" type="file" (change)="convertFile($event, 'ACFACTURADO')">
-        <!-- <input class="form-control" type="file" (change)="onFileChange($event)"> -->
+     
+        <label>No Facturados</label>
+        <input class="form-control" type="file" (change)="convertFile($event, 'ACNOFACTURADO')">
     </div>
 
 

@@ -19,10 +19,17 @@
     background-color: #F4B301;
 }
 
+.bgGreen{
+    background-color: #2BC016;
+    color: white;
+}
+
+
 .btnGris{
     background-color: #1E2328;
     color: white;
 }
+
 
 .pad20{
     padding:20px;
@@ -32,7 +39,10 @@
     cursor: pointer;
 }
 
-
+.botonMargen{
+    margin-top:23px;
+    margin-right: 10px;
+}
 
 .fondoModif {
     background-color: rgba(0, 5, 46, 0.6);

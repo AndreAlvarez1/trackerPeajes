@@ -20,6 +20,9 @@ export class CargaDatosComponent implements OnInit {
   autopista           = '';
   tipo                = '';
 
+  facturados:any[]    = [];
+  noFacturados:any[]  = [];
+
   constructor(private papa: Papa,
               private conex: ConectorService,
               private formatos: FormatosService) { 
@@ -27,35 +30,25 @@ export class CargaDatosComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getFacturados();
   }
 
 
-  onFileChange(event:any){
-    this.loading2        = true;
-    this.newTransitos    = [];
-
-    console.log('evento', event)
-    console.log('files', event.target.files[0])
-    const fileToLoad = event.target.files[0];
-    const fileReader = new FileReader();
-      
-     fileReader.onload = fileLoadedEvent => {
-        if (fileLoadedEvent.target){
-          const textFromFileLoaded:any = fileLoadedEvent.target.result;
-          let datos = JSON.parse(textFromFileLoaded);
-          console.log('dentro', datos);
-        } else {
-          console.log('vacio');
-        }
-
-        // this.reemplazarData(datos);
-      };
-      
-      fileReader.readAsText(fileToLoad, "UTF-8");
-  
+  info(){
+    console.log('facturados', this.facturados);
+    console.log('No facturados', this.noFacturados);
   }
-  
+  getFacturados(){
+    this.loading = true;
+    this.conex.getDatos('/generales/transitosF').subscribe( (resp:any) => { this.facturados = resp['datos'];this.getNoFacturados();
+  })
+  }
+ 
+  getNoFacturados(){
+    this.conex.getDatos('/generales/transitosNF').subscribe( (resp:any) => { this.noFacturados = resp['datos']; this.loading = false; this.info()})
+  }
 
+ 
   convertFile(event: any, autopista:string) {
     this.loading2 = true;
 
@@ -75,11 +68,19 @@ tojson(csvData:any, autopista:string){
     complete: (result) => {
         console.log('Parsed: ', result);
         switch(autopista){
-          case 'ACFACTURADO':
-            this.newTransitos = this.formatos.ACFACTURADO(result.data, this.params.user.companyId);
+          case 'ACFACTURADO': // Autopista central facturados - Incluye interurbanos
+            const transitos1 = this.formatos.ACFACTURADO(result.data, this.params.user.companyId);
             this.tipo         = 'facturados'
             this.autopista    = 'Autopista Central Facturados';
-            this.loading2     = false;
+            this.verificarRepetidos(transitos1);
+            break;
+
+          case 'ACNOFACTURADO':  // Autopista central No facturados
+            const transitos2 = this.formatos.ACNOFACTURADO(result.data, this.params.user.companyId);
+            console.log('transitos2', transitos2);
+            this.tipo         = 'No facturados'
+            this.autopista    = 'Autopista Central No Facturados';
+            this.verificarRepetidosNF(transitos2);
             break;
         }
     }
@@ -87,7 +88,39 @@ tojson(csvData:any, autopista:string){
 }
 
 
+verificarRepetidos(transitos:any){
+  for (let t of transitos){
+    const existe = this.facturados.find( tra => tra.patente == t.patente && tra.fecha == t.fecha && tra.hora == t.hora);
+   if (!existe){
+    this.newTransitos.push(t);
+   }
+  }
+  if (this.newTransitos.length == 0){
+    Swal.fire({
+      icon: 'warning',
+      title: 'No hay nuevos transitos',
+      text: 'Todos los transitos del excel ya existian en la base de datos',
+    })
+  }
+  this.loading2     = false;
+}
 
+verificarRepetidosNF(transitos:any){
+  for (let t of transitos){
+    const existe = this.noFacturados.find( tra => tra.patente == t.patente && tra.fecha == t.fecha && tra.hora == t.hora);
+   if (!existe){
+    this.newTransitos.push(t);
+   }
+  }
+  if (this.newTransitos.length == 0){
+    Swal.fire({
+      icon: 'warning',
+      title: 'No hay nuevos transitos',
+      text: 'Todos los transitos del excel ya existian en la base de datos',
+    })
+  }
+  this.loading2     = false;
+}
 
 guardarLote(){
   this.loading = true;

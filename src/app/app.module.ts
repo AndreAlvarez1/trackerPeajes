@@ -12,6 +12,8 @@ import { CargaDatosComponent } from './transitos/carga-datos/carga-datos.compone
 import { FacturadosComponent } from './transitos/facturados/facturados.component';
 import { NoFacturadosComponent } from './transitos/no-facturados/no-facturados.component';
 import { LoadingComponent } from './shared/loading/loading.component';
+import { FilterPipe } from './pipes/filter.pipe';
+import { ResumenComponent } from './components/resumen/resumen.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { LoadingComponent } from './shared/loading/loading.component';
     CargaDatosComponent,
     FacturadosComponent,
     NoFacturadosComponent,
-    LoadingComponent
+    LoadingComponent,
+    FilterPipe,
+    ResumenComponent
   ],
   imports: [
     BrowserModule,
