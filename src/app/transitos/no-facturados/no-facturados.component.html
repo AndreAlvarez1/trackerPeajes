@@ -83,6 +83,7 @@
                     <th>Fecha</th>
                     <th>Hora</th>
                     <th>Monto</th>
+                    <th>Aplica Tarifa</th>
                 </tr>
             </thead>
             <tbody  class="animated fadeIn">
@@ -94,7 +95,9 @@
                     <td>{{c.eje}}</td>                                
                     <td>{{c.fecha}}</td>                                
                     <td>{{c.hora}}</td>                                
-                    <td>${{c.monto}}</td>                                
+                    <td>${{c.monto}}</td>   
+                    <th *ngIf="c.aplicaTarifa > 0"><i class="fa-solid fa-check text-success"></i></th>
+                    <th *ngIf="c.aplicaTarifa < 1"><i class="fa-solid fa-xmark text-danger"></i></th>                             
                 </tr>
             </tbody>
         </table>

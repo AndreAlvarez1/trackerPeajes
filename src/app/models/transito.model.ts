@@ -12,6 +12,7 @@ export class TransitoModel {
     updated_at: string;	
     status: number;
     estado: string;
+    aplicaTarifa: number;
 
 
 constructor() {
@@ -28,6 +29,7 @@ constructor() {
     this.updated_at   = '';	
     this.status       = 1;
     this.estado       = '';
+    this.aplicaTarifa = 1;
 }
 
 }

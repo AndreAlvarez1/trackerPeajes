@@ -1,6 +1,6 @@
 <div class="row bgGris2" >
     <div class="col-12" style="padding:60px 20px">
-        <h1>Carga Excels</h1>
+        <h1 (click)="info()">Carga Excels</h1>
     </div>
     <hr>
 </div>
@@ -10,12 +10,77 @@
 
 <div class="row bgGris2 pad20">
     <div class="col-12 col-md-4">
-        <h2>AutoPista Central</h2>
-        <label>Facturados</label>
-        <input class="form-control" type="file" (change)="convertFile($event, 'ACFACTURADO')">
-     
-        <label>No Facturados</label>
-        <input class="form-control" type="file" (change)="convertFile($event, 'ACNOFACTURADO')">
+
+        <div #central>
+
+            <h2>AutoPista Central</h2>
+            <div class="row">
+                <div class="col-8 col-md-7">
+                    <label>Facturados</label>
+                    <input class="form-control" type="file" (change)="convertFile($event, 'ACFACTURADO')">
+                </div>
+                <div class="col">
+                    
+                    <p style="margin-top:32px" class="pointer" (click)="aplicarTarifa('ACFACTURADO')">
+                        <i [ngClass]="aplicaTarifa.ACFACTURADO ? 'fa-regular fa-square-check' : 'fa-regular fa-square'"></i> 
+                        Aplica Tarifa 
+                    </p>
+                    
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-8 col-md-7">
+                    <label>No Facturados</label>
+                    <input class="form-control" type="file" (change)="convertFile($event, 'ACNOFACTURADO')">
+                </div>
+                <div class="col">
+                    
+                    <p style="margin-top:32px" class="pointer" (click)="aplicarTarifa('ACNOFACTURADO')">
+                        <i [ngClass]="aplicaTarifa.ACNOFACTURADO ? 'fa-regular fa-square-check' : 'fa-regular fa-square'"></i> 
+                        Aplica Tarifa 
+                    </p>
+                    
+                </div>
+            </div>
+            
+        </div>
+        <!-- Fin centrla -->
+
+        <div #cnorte>
+
+            <h2>Costanera Norte</h2>
+            <div class="row">
+                <div class="col-8 col-md-7">
+                    <label>Facturados</label>
+                    <input class="form-control" type="file" (change)="convertFile($event, 'CNORTEF')">
+                </div>
+                <div class="col">
+                    
+                    <p style="margin-top:32px" class="pointer" (click)="aplicarTarifa('CNORTEF')">
+                        <i [ngClass]="aplicaTarifa.CNORTEF ? 'fa-regular fa-square-check' : 'fa-regular fa-square'"></i> 
+                        Aplica Tarifa 
+                    </p>
+            
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8 col-md-7">
+                    <label>No Facturados</label>
+                    <input class="form-control" type="file" (change)="convertFile($event, 'CNORTENF')">
+                </div>
+                <div class="col">
+                    
+                    <p style="margin-top:32px" class="pointer" (click)="aplicarTarifa('CNORTENF')">
+                        <i [ngClass]="aplicaTarifa.CNORTENF ? 'fa-regular fa-square-check' : 'fa-regular fa-square'"></i> 
+                        Aplica Tarifa 
+                    </p>
+            
+                </div>
+            </div>
+
+    </div>
+        <!-- Fin Cnorte -->
     </div>
 
 
@@ -36,6 +101,7 @@
                             <th>Fecha</th>
                             <th>Hora</th>
                             <th>Monto</th>
+                            <th>Aplica Tarifa</th>
                         </tr>
                     </thead>
                     <tbody  class="animated fadeIn">
@@ -46,7 +112,10 @@
                             <td>{{c.eje}}</td>                                
                             <td>{{c.fecha}}</td>                                
                             <td>{{c.hora}}</td>                                
-                            <td>${{c.monto}}</td>                                
+                            <td>${{c.monto}}</td>       
+                            <th *ngIf="c.aplicaTarifa > 0"><i class="fa-solid fa-check text-success"></i></th>
+                            <th *ngIf="c.aplicaTarifa < 1"><i class="fa-solid fa-xmark text-danger"></i></th>
+                         
                         </tr>
                     </tbody>
         

@@ -14,6 +14,7 @@ import { NoFacturadosComponent } from './transitos/no-facturados/no-facturados.c
 import { LoadingComponent } from './shared/loading/loading.component';
 import { FilterPipe } from './pipes/filter.pipe';
 import { ResumenComponent } from './components/resumen/resumen.component';
+import { LimpiarBdComponent } from './transitos/limpiar-bd/limpiar-bd.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ResumenComponent } from './components/resumen/resumen.component';
     NoFacturadosComponent,
     LoadingComponent,
     FilterPipe,
-    ResumenComponent
+    ResumenComponent,
+    LimpiarBdComponent
   ],
   imports: [
     BrowserModule,

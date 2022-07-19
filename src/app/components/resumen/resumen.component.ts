@@ -107,7 +107,12 @@ export class ResumenComponent implements OnInit {
     for (let t of this.transitosAll){
       const existe = this.autopistas.find( aut => aut.id == t.autopistaId);
       t.autopista = existe.nombre;
-      t.tarifaAplicada = t.monto * existe.tarifa;
+      if (t.aplicaTarifa > 0){
+        t.tarifaAplicada = t.monto * existe.tarifa;
+      } else {
+        t.tarifaAplicada = t.monto;
+      }
+
       this.total += t.tarifaAplicada;
       this.transitos.push(t);
     }
@@ -123,6 +128,10 @@ export class ResumenComponent implements OnInit {
     this.excelService.exportAsExcelFile(dato, nombreArchivo);
 }
 
+
+verTransito(t:any){
+  console.log('transito', t);
+}
 
 error(texto:string){
   Swal.fire({

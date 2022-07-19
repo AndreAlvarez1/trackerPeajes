@@ -116,10 +116,11 @@
                     <th>Hora</th>
                     <th>Monto</th>
                     <th>Tarifa</th>
+                    <th>Facturado</th>
                 </tr>
             </thead>
             <tbody  class="animated fadeIn">
-                <tr class="pointer" *ngFor="let c of transitos  | filter : { 'autopista' : searchString, 'patente' : searchString, 'portico' : searchString, 'eje' : searchString, 'fecha' : searchString, 'hora' : searchString, 'monto' : searchString } : false ; index as i "  >
+                <tr class="pointer" *ngFor="let c of transitos  | filter : { 'autopista' : searchString, 'patente' : searchString, 'portico' : searchString, 'eje' : searchString, 'fecha' : searchString, 'hora' : searchString, 'monto' : searchString } : false ; index as i " (click)="verTransito(c)"  >
                     <td>{{ i + 1 }}</td>
                     <td>{{c.autopista}}</td>
                     <td>{{c.patente}}</td>
@@ -128,7 +129,9 @@
                     <td>{{c.fecha}}</td>                                
                     <td>{{c.hora}}</td>                                
                     <td>${{c.monto}}</td>                                
-                    <td>${{c.tarifaAplicada | number: '1.0-2'}}</td>                                
+                    <td [ngClass]="c.aplicaTarifa > 0 ? 'text-success' : 'text-danger' ">${{c.tarifaAplicada | number: '1.0-2'}}</td>      
+                    <th><i [ngClass]="c.facturado ? 'fa-solid fa-check text-success' : 'fa-solid fa-xmark text-danger' "></i></th>
+                          
                 </tr>
             </tbody>
         </table>
