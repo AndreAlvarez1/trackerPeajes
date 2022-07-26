@@ -3,6 +3,8 @@ import { Papa } from 'ngx-papaparse';
 import { ParamsModel } from 'src/app/models/params.model';
 import { ConectorService } from 'src/app/services/conector.service';
 import { FormatosService } from 'src/app/services/formatos.service';
+import * as XLSX from 'xlsx';
+
 import Swal from 'sweetalert2'
 
 
@@ -27,7 +29,14 @@ export class CargaDatosComponent implements OnInit {
                             ACFACTURADO: true,
                             ACNOFACTURADO: true,
                             CNORTEF: false,
-                            CNORTENF: false
+                            CNORTENF: false,
+                            VSUR: false,
+                            VSURNF: false,
+                            VNORTE: false,
+                            VNORTENF: false,
+                            RMAIPO: true,
+                            STGOLAMPA: false,
+                            STGOLAMPANF: false
                         }
 
 
@@ -50,24 +59,60 @@ export class CargaDatosComponent implements OnInit {
   getFacturados(){
     this.loading      = true;
     this.newTransitos = [];
-    this.conex.getDatos('/generales/transitosF').subscribe( (resp:any) => { this.facturados = resp['datos'];this.getNoFacturados();
-  })
+    this.conex.getDatos('/generales/transitosF')
+              .subscribe( (resp:any) => {
+                     this.facturados = resp['datos'];
+                     this.getNoFacturados();
+                     })
   }
  
   getNoFacturados(){
-    this.conex.getDatos('/generales/transitosNF').subscribe( (resp:any) => { this.noFacturados = resp['datos']; this.loading = false; this.info()})
+    this.conex.getDatos('/generales/transitosNF')
+              .subscribe( (resp:any) => { 
+                  this.noFacturados = resp['datos']; 
+                  this.loading = false; 
+                  this.info();
+                })
+  }
+
+  addXlsx(event: any, autopista:string){
+    this.newTransitos = [];
+
+    console.log('event xlsx', event)
+    const file= event.target.files[0];     
+    let fileReader = new FileReader();    
+    fileReader.readAsArrayBuffer(file);     
+    fileReader.onload = (e) => {    
+        const arrayBuffer:any = fileReader.result;    
+        var data = new Uint8Array(arrayBuffer);    
+        var arr = new Array();    
+        for(var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);    
+        var bstr = arr.join("");    
+        var workbook = XLSX.read(bstr, {type:"binary"});    
+        var first_sheet_name = workbook.SheetNames[0];    
+        var worksheet = workbook.Sheets[first_sheet_name];    
+        console.log(XLSX.utils.sheet_to_json(worksheet,{raw:true})); 
+        
+        const arraylist = XLSX.utils.sheet_to_json(worksheet,{raw:true});     
+
+        this.tojson2(arraylist, autopista);
+      
+    }    
   }
 
  
   convertFile(event: any, autopista:string) {
+    this.newTransitos = [];
+
     console.log('event', event)
     this.loading2 = true;
 
     let file = event.target.files[0];
+
     const reader = new FileReader();
     reader.readAsText(file);
     reader.onload = () => {
-      console.log('aca', reader.result);
+      console.log('aca', reader.result, autopista);
       this.tojson(reader.result, autopista)
     };
 }
@@ -122,13 +167,118 @@ tojson(csvData:any, autopista:string){
               this.verificarRepetidosNF(transitos4, this.aplicaTarifa.CNORTENF);
             }
             break;
+    
+            case 'VSUR':  //Vespucio Sur facturados
+            this.autopista    = 'Vespucio Sur Facturados';
+            const transitos5:any = this.formatos.VSUR(result.data, this.params.user.companyId);
+            this.tipo = 'facturados'
+            if (transitos5 == 'error'){
+              this.error('No es el formato de excel que corresponde');
+            } else {
+              this.verificarRepetidos(transitos5, this.aplicaTarifa.VSUR);
+            }
+            break;
+       
+            case 'VSURNF':  // Vespucio Sur No facturados
+            this.autopista    = 'Vespucio Sur No Facturados';
+            const transitos6:any = this.formatos.VSURNF(result.data, this.params.user.companyId);
+            this.tipo = 'No facturados'
+            if (transitos6 == 'error'){
+              this.error('No es el formato de excel que corresponde');
+            } else {
+              this.verificarRepetidosNF(transitos6, this.aplicaTarifa.VSURNF);
+            }
+            break;
+            
+            case 'VNORTE':  //Vespucio Norte facturados
+            this.autopista    = 'Vespucio Norte Facturados';
+            const transitos7:any = this.formatos.VNORTE(result.data, this.params.user.companyId);
+            this.tipo = 'facturados'
+            if (transitos7 == 'error'){
+              this.error('No es el formato de excel que corresponde');
+            } else {
+              this.verificarRepetidos(transitos7, this.aplicaTarifa.VNORTENF);
+            }
+            break;
+       
+            case 'VNORTENF':  // Vespucio Norte No facturados
+            this.autopista    = 'Vespucio Norte No Facturados';
+            const transitos8:any = this.formatos.VNORTENF(result.data, this.params.user.companyId);
+            this.tipo = 'No facturados'
+            if (transitos8 == 'error'){
+              this.error('No es el formato de excel que corresponde');
+            } else {
+              this.verificarRepetidosNF(transitos8, this.aplicaTarifa.VNORTENF);
+            }
+            break;
+  
         }
     }
 });
 }
 
+tojson2(datos:any, autopista:string){
+  switch(autopista){
+    case 'VNORTE':  //Vespucio Norte facturados
+      this.autopista    = 'Vespucio Norte Facturados';
+      const transitos1:any = this.formatos.VNORTE(datos, this.params.user.companyId);
+      this.tipo = 'facturados'
+      if (transitos1 == 'error'){
+        this.error('No es el formato de excel que corresponde');
+      } else {
+        this.verificarRepetidos(transitos1, this.aplicaTarifa.VNORTENF);
+      }
+      break;
+      
+      case 'VNORTENF':  // Vespucio Norte No facturados
+      this.autopista       = 'Vespucio Norte No Facturados';
+      const transitos2:any = this.formatos.VNORTENF(datos, this.params.user.companyId);
+      this.tipo = 'No facturados'
+      if (transitos2 == 'error'){
+        this.error('No es el formato de excel que corresponde');
+      } else {
+        this.verificarRepetidosNF(transitos2, this.aplicaTarifa.VNORTENF);
+      }
+      break;
+   
+      case 'RMAIPO': 
+        this.autopista       = 'Ruta Maipo';
+        const transitos3:any = this.formatos.RMAIPO(datos, this.params.user.companyId);
+        this.tipo = 'ambos'
+        if (transitos3 == 'error'){
+          this.error('No es el formato de excel que corresponde');
+        } else {
+          this.verificarRepetidosAmbos(transitos3, this.aplicaTarifa.RMAIPO);
+        }
+        break;
+
+        case 'STGOLAMPA': 
+        this.autopista    = 'Santiago Lampa Facturados';
+        const transitos4:any = this.formatos.STGOLAMPA(datos, this.params.user.companyId);
+        this.tipo = 'facturados'
+        if (transitos4 == 'error'){
+          this.error('No es el formato de excel que corresponde');
+        } else {
+          this.verificarRepetidos(transitos4, this.aplicaTarifa.STGOLAMPA);
+        }
+        break;
+ 
+        case 'STGOLAMPANF': 
+        this.autopista    = 'Santiago Lampa No Facturados';
+        const transitos5:any = this.formatos.STGOLAMPA(datos, this.params.user.companyId);
+        this.tipo = 'facturados'
+        if (transitos5 == 'error'){
+          this.error('No es el formato de excel que corresponde');
+        } else {
+          this.verificarRepetidosNF(transitos5, this.aplicaTarifa.STGOLAMPANF);
+        }
+        break;
+    }
+}
+
 
 verificarRepetidos(transitos:any, aplicaTarifa:boolean){
+  
   for (let t of transitos){
     
     if (aplicaTarifa){
@@ -180,7 +330,41 @@ verificarRepetidosNF(transitos:any, aplicaTarifa:boolean){
   console.log('newtransitos', this.newTransitos);
 }
 
+verificarRepetidosAmbos(transitos:any, aplicaTarifa:boolean){
+  for (let t of transitos){
+    
+    if (aplicaTarifa){
+      t.aplicaTarifa = 1
+    } else {
+      t.aplicaTarifa = 0
+    }
 
+    if (t.estado == 'facturado'){
+      const existe   = this.facturados.find( tra => tra.patente == t.patente && tra.fecha == t.fecha && tra.hora == t.hora);
+      if (!existe){
+       this.newTransitos.push(t);
+      }
+    }
+   
+    if (t.estado != 'facturado'){
+      const existe   = this.noFacturados.find( tra => tra.patente == t.patente && tra.fecha == t.fecha && tra.hora == t.hora);
+      if (!existe){
+       this.newTransitos.push(t);
+      }
+    }
+  }
+
+  if (this.newTransitos.length == 0){
+    Swal.fire({
+      icon: 'warning',
+      title: 'No hay nuevos transitos',
+      text: 'Todos los transitos del excel ya existian en la base de datos',
+    })
+  }
+
+  this.loading2     = false;
+  console.log('newtransitos', this.newTransitos);
+}
 
 aplicarTarifa(tipo:string){
 
@@ -232,6 +416,71 @@ aplicarTarifa(tipo:string){
       }
 
       break;
+    case 'VSUR':
+      this.aplicaTarifa.VSUR = !this.aplicaTarifa.VSUR
+      if (this.aplicaTarifa.VSUR){
+        aplica = 1;
+      }
+
+      for (let t of this.newTransitos){
+        t.aplicaTarifa = aplica;
+      }
+
+      break;
+    case 'VSURNF':
+      this.aplicaTarifa.VSURNF = !this.aplicaTarifa.VSURNF
+      if (this.aplicaTarifa.VSURNF){
+        aplica = 1;
+      }
+
+      for (let t of this.newTransitos){
+        t.aplicaTarifa = aplica;
+      }
+      break;
+  
+    case 'VNORTE':
+      this.aplicaTarifa.VNORTE = !this.aplicaTarifa.VNORTE
+      if (this.aplicaTarifa.VNORTE){
+        aplica = 1;
+      }
+
+      for (let t of this.newTransitos){
+        t.aplicaTarifa = aplica;
+      }
+
+      break;
+    case 'VNORTENF':
+      this.aplicaTarifa.VNORTENF = !this.aplicaTarifa.VNORTENF
+      if (this.aplicaTarifa.VNORTENF){
+        aplica = 1;
+      }
+
+      for (let t of this.newTransitos){
+        t.aplicaTarifa = aplica;
+      }
+      break;
+
+    case 'STGOLAMPA':
+      this.aplicaTarifa.STGOLAMPA = !this.aplicaTarifa.STGOLAMPA
+      if (this.aplicaTarifa.STGOLAMPA){
+        aplica = 1;
+      }
+
+      for (let t of this.newTransitos){
+        t.aplicaTarifa = aplica;
+      }
+
+      break;
+    case 'STGOLAMPANF':
+      this.aplicaTarifa.STGOLAMPANF = !this.aplicaTarifa.STGOLAMPANF
+      if (this.aplicaTarifa.STGOLAMPANF){
+        aplica = 1;
+      }
+
+      for (let t of this.newTransitos){
+        t.aplicaTarifa = aplica;
+      }
+      break;
   }
 
   if(tipo){
@@ -241,15 +490,69 @@ aplicarTarifa(tipo:string){
   }
  
 }
+
+guardar(){
+  if (this.tipo == 'ambos'){
+    this.guadarDiferidos();
+  } else {
+    this.guardarLote();
+  }
+}
+
 guardarLote(){
   this.loading = true;
+
+ 
+
   this.conex.guardarDato(`/post/loteTransitos/${this.tipo}`, this.newTransitos)
             .subscribe( (resp:any) => {
                 console.log('guardé transitos', resp);
                 this.loading = false;
                 this.exito('Transitos guardados con exito')
-                this.getFacturados();
-      
+              })
+}
+
+guadarDiferidos(){
+ const newFacturados:any[]   = [];
+ const newNoFacturados:any[] = [];
+ 
+ for (let t of this.newTransitos){
+  if (t.estado == 'facturado'){
+    newFacturados.push(t);
+  } else{
+    newNoFacturados.push(t);
+  }
+ }
+
+ if (newFacturados.length > 0){
+  this.conex.guardarDato(`/post/loteTransitos/facturados`, newFacturados)
+      .subscribe( (resp:any) => {
+          console.log('guardé transitos', resp);
+          if (newNoFacturados.length > 0){
+            this.guadarLote2(newNoFacturados);
+          } else {
+            this.loading = false;
+            this.exito('Transitos guardados con exito')
+          }
+        })
+ } else {
+   if (newNoFacturados.length > 0){
+    this.guadarLote2(newNoFacturados);
+   }
+ }
+
+
+
+ console.log('Facturados', newFacturados)
+ console.log('No Facturados', newNoFacturados)
+}
+
+guadarLote2(transitos:any){
+  this.conex.guardarDato(`/post/loteTransitos/noFacturados`, transitos)
+            .subscribe( (resp:any) => {
+                console.log('guardé transitos', resp);
+                this.loading = false;
+                this.exito('Transitos guardados con exito')
               })
 }
 

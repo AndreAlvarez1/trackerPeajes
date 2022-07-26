@@ -84,11 +84,15 @@ export class ResumenComponent implements OnInit {
         
           console.log('no facturas', resp['datos'])
           for (let nf of resp['datos']){
-            const existe = this.transitosAll.find( tra => tra.fecha == nf.fecha && tra.hora == nf.fecha);
+            const existe = this.transitosAll.find( tra => tra.fecha == nf.fecha && tra.hora == nf.hora);
             if (!existe){
+              console.log('no está repetido', nf);
               nf.facturado = false;
               this.transitosAll.push(nf) 
+            } else {
+              console.log('repetido', existe);
             }
+
           }
 
           this.calcularTarifas();

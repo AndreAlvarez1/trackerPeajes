@@ -1,4 +1,4 @@
-<div class="row bgGris2" >
+<div class="row bgGris2"  style="margin:0">
     <div class="col-12" style="padding:60px 20px">
         <h1 (click)="info()">Carga Excels</h1>
     </div>
@@ -8,7 +8,7 @@
 
 
 
-<div class="row bgGris2 pad20">
+<div class="row bgGris2 pad20"  style="margin:0">
     <div class="col-12 col-md-4">
 
         <div #central>
@@ -81,6 +81,135 @@
 
     </div>
         <!-- Fin Cnorte -->
+
+
+        <div #vespucioSur>
+
+            <h2>Vespucio Sur</h2>
+            <div class="row">
+                <div class="col-8 col-md-7">
+                    <label>Facturados</label>
+                    <input class="form-control" type="file" (change)="convertFile($event, 'VSUR')">
+                </div>
+                <div class="col">
+                    
+                    <p style="margin-top:32px" class="pointer" (click)="aplicarTarifa('VSUR')">
+                        <i [ngClass]="aplicaTarifa.VSUR ? 'fa-regular fa-square-check' : 'fa-regular fa-square'"></i> 
+                        Aplica Tarifa 
+                    </p>
+            
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8 col-md-7">
+                    <label>No Facturados</label>
+                    <input class="form-control" type="file" (change)="convertFile($event, 'VSURNF')">
+                </div>
+                <div class="col">
+                    
+                    <p style="margin-top:32px" class="pointer" (click)="aplicarTarifa('VSURNF')">
+                        <i [ngClass]="aplicaTarifa.VSURNF ? 'fa-regular fa-square-check' : 'fa-regular fa-square'"></i> 
+                        Aplica Tarifa 
+                    </p>
+            
+                </div>
+            </div>
+
+        </div>
+        <!-- Fin Vespucio sur -->
+   
+        <div #vespucioNorte>
+
+            <h2>Vespucio Norte</h2>
+            <div class="row">
+                <div class="col-8 col-md-7">
+                    <label class="text-danger">Facturados TEST PENDIENTE</label>
+                    <input class="form-control" type="file" (change)="addXlsx($event, 'VNORTE')">
+                </div>
+                <div class="col">
+                    
+                    <p style="margin-top:32px" class="pointer" (click)="aplicarTarifa('VNORTE')">
+                        <i [ngClass]="aplicaTarifa.VNORTE ? 'fa-regular fa-square-check' : 'fa-regular fa-square'"></i> 
+                        Aplica Tarifa 
+                    </p>
+            
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8 col-md-7">
+                    <label>No Facturados</label>
+                    <input class="form-control" type="file" (change)="addXlsx($event, 'VNORTENF')">
+                </div>
+                <div class="col">
+                    
+                    <p style="margin-top:32px" class="pointer" (click)="aplicarTarifa('VNORTENF')">
+                        <i [ngClass]="aplicaTarifa.VNORTENF ? 'fa-regular fa-square-check' : 'fa-regular fa-square'"></i> 
+                        Aplica Tarifa 
+                    </p>
+            
+                </div>
+            </div>
+
+        </div>
+        <!-- Fin Vespucio Norte -->
+       
+        <div #ruta del maipo>
+
+            <h2>Ruta del Maipo</h2>
+            <div class="row">
+                <div class="col-8 col-md-7">
+                    <label>Facturados</label>
+                    <input class="form-control" type="file" (change)="addXlsx($event, 'RMAIPO')">
+                </div>
+                <div class="col">
+                    
+                    <p style="margin-top:32px" class="pointer" (click)="aplicarTarifa('RMAIPO')">
+                        <i [ngClass]="aplicaTarifa.RMAIPO ? 'fa-regular fa-square-check' : 'fa-regular fa-square'"></i> 
+                        Aplica Tarifa 
+                    </p>
+            
+                </div>
+            </div>
+   
+        </div> 
+        <!-- Fin Ruta del maipo -->
+
+        <div #stgoLampo>
+
+            <h2>Autovía Santiago Lampa</h2>
+            <div class="row">
+                <div class="col-8 col-md-7">
+                    <label >Facturados</label>
+                    <input class="form-control" type="file" (change)="addXlsx($event, 'STGOLAMPA')">
+                </div>
+                <div class="col">
+                    
+                    <p style="margin-top:32px" class="pointer" (click)="aplicarTarifa('STGOLAMPA')">
+                        <i [ngClass]="aplicaTarifa.STGOLAMPA ? 'fa-regular fa-square-check' : 'fa-regular fa-square'"></i> 
+                        Aplica Tarifa 
+                    </p>
+            
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-8 col-md-7">
+                    <label class="text-danger" >No Facturados TEST PENDIENTE</label>
+                    <input class="form-control" type="file" (change)="addXlsx($event, 'STGOLAMPANF')">
+                </div>
+                <div class="col">
+                    
+                    <p style="margin-top:32px" class="pointer" (click)="aplicarTarifa('STGOLAMPANF')">
+                        <i [ngClass]="aplicaTarifa.STGOLAMPANF ? 'fa-regular fa-square-check' : 'fa-regular fa-square'"></i> 
+                        Aplica Tarifa 
+                    </p>
+            
+                </div>
+            </div>
+
+        </div>
+        <!-- Fin Vespucio Norte -->
+
+
     </div>
 
 
@@ -90,7 +219,7 @@
         <div *ngIf="newTransitos.length > 0 && loading2 == false" class="row">
             <div class="col-12">
                 <h1>Autopista {{autopista}} </h1>
-                <button class="btn btn-warning" (click)="guardarLote()">Guardar Transitos</button>
+                <button class="btn btn-warning" (click)="guardar()">Guardar Transitos</button>
                 <table class="table table-striped table-hover">
                     <thead class="thead-dark">
                         <tr>

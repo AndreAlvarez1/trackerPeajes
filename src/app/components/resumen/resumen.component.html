@@ -129,7 +129,7 @@
                     <td>{{c.fecha}}</td>                                
                     <td>{{c.hora}}</td>                                
                     <td>${{c.monto}}</td>                                
-                    <td [ngClass]="c.aplicaTarifa > 0 ? 'text-success' : 'text-danger' ">${{c.tarifaAplicada | number: '1.0-2'}}</td>      
+                    <td [ngClass]="c.aplicaTarifa > 0 ? 'text-success' : 'text-secondary' ">${{c.tarifaAplicada | number: '1.0-2'}}</td>      
                     <th><i [ngClass]="c.facturado ? 'fa-solid fa-check text-success' : 'fa-solid fa-xmark text-danger' "></i></th>
                           
                 </tr>
