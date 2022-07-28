@@ -184,7 +184,7 @@ export class FormatosService {
 
       if (i > 0 && i < resultados.length - 1){
           let transito = new TransitoModel();
-          transito.autopistaId   = 2
+          transito.autopistaId   = 3;
           transito.companyId     = companyId;
           transito.patente       = dato[2];
           transito.portico       = dato[1];
@@ -215,7 +215,7 @@ export class FormatosService {
 
       if (i > 0 && i < resultados.length - 1 && dato != ''){
           let transito = new TransitoModel();
-          transito.autopistaId   = 2
+          transito.autopistaId   = 3;
           transito.companyId     = companyId;
           transito.patente       = dato[5];
           transito.portico       = dato[6];

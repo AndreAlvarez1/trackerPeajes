@@ -127,9 +127,23 @@ export class ResumenComponent implements OnInit {
   }
 
 
-  exportAsXLSX(dato:any, titulo:string): void {
+  exportAsXLSX(datos:any, titulo:string): void {    
+    const exportar = [];
+
+    for (let d of datos){
+        const newRegistro = {
+                                patente: d.patente,
+                                portico: d.portico,
+                                eje: d.eje,
+                                fecha: d.fecha,
+                                hora: d.hora,
+                                autopista: d.autopista,
+                                tarifaAplicada: d.tarifaAplicada
+                            }
+        exportar.push(newRegistro);
+    }
     const nombreArchivo = titulo + this.patente;
-    this.excelService.exportAsExcelFile(dato, nombreArchivo);
+    this.excelService.exportAsExcelFile(exportar, nombreArchivo);
 }
 
 
