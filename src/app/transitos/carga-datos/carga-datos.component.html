@@ -123,7 +123,7 @@
             <h2>Vespucio Norte</h2>
             <div class="row">
                 <div class="col-8 col-md-7">
-                    <label class="text-danger">Facturados TEST PENDIENTE</label>
+                    <label>Facturados</label>
                     <input class="form-control" type="file" (change)="addXlsx($event, 'VNORTE')">
                 </div>
                 <div class="col">
@@ -191,20 +191,7 @@
             
                 </div>
             </div>
-            <div class="row">
-                <div class="col-8 col-md-7">
-                    <label class="text-danger" >No Facturados TEST PENDIENTE</label>
-                    <input class="form-control" type="file" (change)="addXlsx($event, 'STGOLAMPANF')">
-                </div>
-                <div class="col">
-                    
-                    <p style="margin-top:32px" class="pointer" (click)="aplicarTarifa('STGOLAMPANF')">
-                        <i [ngClass]="aplicaTarifa.STGOLAMPANF ? 'fa-regular fa-square-check' : 'fa-regular fa-square'"></i> 
-                        Aplica Tarifa 
-                    </p>
-            
-                </div>
-            </div>
+           
 
         </div>
         <!-- Fin Vespucio Norte -->

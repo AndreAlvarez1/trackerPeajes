@@ -28,15 +28,14 @@ export class CargaDatosComponent implements OnInit {
   aplicaTarifa        = {
                             ACFACTURADO: true,
                             ACNOFACTURADO: true,
-                            CNORTEF: false,
-                            CNORTENF: false,
-                            VSUR: false,
-                            VSURNF: false,
-                            VNORTE: false,
-                            VNORTENF: false,
+                            CNORTEF: true,
+                            CNORTENF: true,
+                            VSUR: true,
+                            VSURNF: true,
+                            VNORTE: true,
+                            VNORTENF: true,
                             RMAIPO: true,
-                            STGOLAMPA: false,
-                            STGOLAMPANF: false
+                            STGOLAMPA: true
                         }
 
 
@@ -190,27 +189,7 @@ tojson(csvData:any, autopista:string){
             }
             break;
             
-            case 'VNORTE':  //Vespucio Norte facturados
-            this.autopista    = 'Vespucio Norte Facturados';
-            const transitos7:any = this.formatos.VNORTE(result.data, this.params.user.companyId);
-            this.tipo = 'facturados'
-            if (transitos7 == 'error'){
-              this.error('No es el formato de excel que corresponde');
-            } else {
-              this.verificarRepetidos(transitos7, this.aplicaTarifa.VNORTENF);
-            }
-            break;
-       
-            case 'VNORTENF':  // Vespucio Norte No facturados
-            this.autopista    = 'Vespucio Norte No Facturados';
-            const transitos8:any = this.formatos.VNORTENF(result.data, this.params.user.companyId);
-            this.tipo = 'No facturados'
-            if (transitos8 == 'error'){
-              this.error('No es el formato de excel que corresponde');
-            } else {
-              this.verificarRepetidosNF(transitos8, this.aplicaTarifa.VNORTENF);
-            }
-            break;
+  
   
         }
     }
@@ -263,16 +242,6 @@ tojson2(datos:any, autopista:string){
         }
         break;
  
-        case 'STGOLAMPANF': 
-        this.autopista    = 'Santiago Lampa No Facturados';
-        const transitos5:any = this.formatos.STGOLAMPA(datos, this.params.user.companyId);
-        this.tipo = 'facturados'
-        if (transitos5 == 'error'){
-          this.error('No es el formato de excel que corresponde');
-        } else {
-          this.verificarRepetidosNF(transitos5, this.aplicaTarifa.STGOLAMPANF);
-        }
-        break;
     }
 }
 
@@ -459,6 +428,16 @@ aplicarTarifa(tipo:string){
         t.aplicaTarifa = aplica;
       }
       break;
+    case 'RMAIPO':
+      this.aplicaTarifa.RMAIPO = !this.aplicaTarifa.RMAIPO
+      if (this.aplicaTarifa.RMAIPO){
+        aplica = 1;
+      }
+
+      for (let t of this.newTransitos){
+        t.aplicaTarifa = aplica;
+      }
+      break;
 
     case 'STGOLAMPA':
       this.aplicaTarifa.STGOLAMPA = !this.aplicaTarifa.STGOLAMPA
@@ -471,16 +450,7 @@ aplicarTarifa(tipo:string){
       }
 
       break;
-    case 'STGOLAMPANF':
-      this.aplicaTarifa.STGOLAMPANF = !this.aplicaTarifa.STGOLAMPANF
-      if (this.aplicaTarifa.STGOLAMPANF){
-        aplica = 1;
-      }
-
-      for (let t of this.newTransitos){
-        t.aplicaTarifa = aplica;
-      }
-      break;
+ 
   }
 
   if(tipo){

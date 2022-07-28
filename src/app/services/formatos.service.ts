@@ -243,16 +243,17 @@ export class FormatosService {
           let transito = new TransitoModel();
           transito.autopistaId   = 5
           transito.companyId     = companyId;
-          transito.patente       = dato[2];
-          transito.portico       = dato[1];
-          transito.eje           = dato[8];
-          transito.fecha         = this.modificarFecha3(dato[0]);
-          transito.hora          = dato[0].slice(11,16);
-          transito.monto         = Number(dato[6].replace(/,/g, '.'));
+          transito.patente       = dato.Patente;
+          transito.portico       = dato.Portico;
+          transito.eje           = dato.Sentido;
+          transito.fecha         = this.modificarFecha3(dato.Fecha);
+          transito.hora          = dato.Hora;
+          transito.monto         = Number(dato.Valor.replace(/,/g, '.'));
           transitos.push(transito);
         }
     return transitos;
   }
+
 
 
   VNORTENF(resultados:any, companyId:any){
@@ -316,23 +317,6 @@ export class FormatosService {
     return transitos;
   }
 
-//   CategoriaDescripcion: "2"
-// ContractSerialNumber: "1749565542"
-// Facturado: "False"
-// FechaHora: "18-07-2022 19:36:43"
-// Monto: "2900"
-// NumeroComprobanteFiscal: ""
-// Observacion: "Transito Facturable"
-// Patente: "KXSZ11"
-// PatenteCategoria: "2"
-// Plaza: "Nva. Angostura Free Flow"
-// PuntoCobro: "RDM-ANG PP1SN"
-// Sentido: "Sur - Norte"
-// TipoComprobanteFiscal: ""
-// TipoHorario: "Normal"
-// TipoTarifa: ""
-// TipoVehiculo: "AUTOS Y CAMIONETAS"
-// Via: "0"
 
 
   STGOLAMPA(resultados:any, companyId:any){
