@@ -111,7 +111,7 @@ export class CargaDatosComponent implements OnInit {
     const reader = new FileReader();
     reader.readAsText(file);
     reader.onload = () => {
-      console.log('aca', reader.result, autopista);
+      // console.log('aca', reader.result, autopista);
       this.tojson(reader.result, autopista)
     };
 }
@@ -130,13 +130,13 @@ tojson(csvData:any, autopista:string){
             if (transitos1 == 'error'){
               this.error('No es el formato de excel que corresponde');
             } else {
-            this.verificarRepetidos(transitos1, this.aplicaTarifa.ACFACTURADO);
+            this.verificarRepetidos(transitos1, this.aplicaTarifa.ACFACTURADO, 'ACFACTURADO');
             }
             break;
 
           case 'ACNOFACTURADO':  // Autopista central No facturados
             const transitos2 = this.formatos.ACNOFACTURADO(result.data, this.params.user.companyId);
-            this.verificarRepetidosNF(transitos2, this.aplicaTarifa.ACNOFACTURADO);
+            this.verificarRepetidosNF(transitos2, this.aplicaTarifa.ACNOFACTURADO, 'ACNOFACTURADO');
             this.tipo         = 'No facturados'
             if (transitos2 == 'error'){
               this.error('No es el formato de excel que corresponde');
@@ -152,7 +152,7 @@ tojson(csvData:any, autopista:string){
             if (transitos3 == 'error'){
               this.error('No es el formato de excel que corresponde');
             } else {
-              this.verificarRepetidos(transitos3, this.aplicaTarifa.CNORTEF);
+              this.verificarRepetidos(transitos3, this.aplicaTarifa.CNORTEF, 'CNORTEF');
             }
             break;
        
@@ -163,7 +163,7 @@ tojson(csvData:any, autopista:string){
             if (transitos4 == 'error'){
               this.error('No es el formato de excel que corresponde');
             } else {
-              this.verificarRepetidosNF(transitos4, this.aplicaTarifa.CNORTENF);
+              this.verificarRepetidosNF(transitos4, this.aplicaTarifa.CNORTENF, 'CNORTENF');
             }
             break;
     
@@ -174,7 +174,7 @@ tojson(csvData:any, autopista:string){
             if (transitos5 == 'error'){
               this.error('No es el formato de excel que corresponde');
             } else {
-              this.verificarRepetidos(transitos5, this.aplicaTarifa.VSUR);
+              this.verificarRepetidos(transitos5, this.aplicaTarifa.VSUR, 'VSUR');
             }
             break;
        
@@ -185,7 +185,7 @@ tojson(csvData:any, autopista:string){
             if (transitos6 == 'error'){
               this.error('No es el formato de excel que corresponde');
             } else {
-              this.verificarRepetidosNF(transitos6, this.aplicaTarifa.VSURNF);
+              this.verificarRepetidosNF(transitos6, this.aplicaTarifa.VSURNF, 'VSURNF');
             }
             break;
             
@@ -205,7 +205,7 @@ tojson2(datos:any, autopista:string){
       if (transitos1 == 'error'){
         this.error('No es el formato de excel que corresponde');
       } else {
-        this.verificarRepetidos(transitos1, this.aplicaTarifa.VNORTENF);
+        this.verificarRepetidos(transitos1, this.aplicaTarifa.VNORTE, 'VNORTE');
       }
       break;
       
@@ -216,7 +216,7 @@ tojson2(datos:any, autopista:string){
       if (transitos2 == 'error'){
         this.error('No es el formato de excel que corresponde');
       } else {
-        this.verificarRepetidosNF(transitos2, this.aplicaTarifa.VNORTENF);
+        this.verificarRepetidosNF(transitos2, this.aplicaTarifa.VNORTENF, 'VNORTENF');
       }
       break;
    
@@ -238,7 +238,7 @@ tojson2(datos:any, autopista:string){
         if (transitos4 == 'error'){
           this.error('No es el formato de excel que corresponde');
         } else {
-          this.verificarRepetidos(transitos4, this.aplicaTarifa.STGOLAMPA);
+          this.verificarRepetidos(transitos4, this.aplicaTarifa.STGOLAMPA, 'STGOLAMPA');
         }
         break;
  
@@ -246,14 +246,22 @@ tojson2(datos:any, autopista:string){
 }
 
 
-verificarRepetidos(transitos:any, aplicaTarifa:boolean){
+verificarRepetidos(transitos:any, aplicaTarifa:boolean, autopista:string){
   
+  console.log('AUTOPISTA', autopista, transitos);
+
   for (let t of transitos){
     
     if (aplicaTarifa){
       t.aplicaTarifa = 1
     } else {
       t.aplicaTarifa = 0
+    }
+
+    if (autopista == 'CNORTEF' ){
+      if (t.eje == 'NOR'){
+        t.aplicaTarifa = 0;
+      }
     }
 
     const existe   = this.facturados.find( tra => tra.patente == t.patente && tra.fecha == t.fecha && tra.hora == t.hora);
@@ -274,7 +282,7 @@ verificarRepetidos(transitos:any, aplicaTarifa:boolean){
 
 }
 
-verificarRepetidosNF(transitos:any, aplicaTarifa:boolean){
+verificarRepetidosNF(transitos:any, aplicaTarifa:boolean, autopista:string){
   
   for (let t of transitos){
     
@@ -283,6 +291,14 @@ verificarRepetidosNF(transitos:any, aplicaTarifa:boolean){
     } else {
       t.aplicaTarifa = 0
     }
+
+    if (autopista == 'CNORTENF' ){
+      if (t.eje == 'NOR'){
+        t.aplicaTarifa = 0;
+      }
+    }
+
+
     const existe   = this.noFacturados.find( tra => tra.patente == t.patente && tra.fecha == t.fecha && tra.hora == t.hora);
    if (!existe){
     this.newTransitos.push(t);
@@ -364,25 +380,28 @@ aplicarTarifa(tipo:string){
 
       break;
     case 'CNORTEF':
-      this.aplicaTarifa.CNORTEF = !this.aplicaTarifa.CNORTEF
-      if (this.aplicaTarifa.CNORTEF){
-        aplica = 1;
-      }
+      // this.aplicaTarifa.CNORTEF = !this.aplicaTarifa.CNORTEF
+      // if (this.aplicaTarifa.CNORTEF){
+      //   aplica = 1;
+      // }
 
-      for (let t of this.newTransitos){
-        t.aplicaTarifa = aplica;
-      }
+      // for (let t of this.newTransitos){
+      //   t.aplicaTarifa = aplica;
+      // }
+      this.aplicaFijo('Costanera norte siempre aplica, excepto eje nor oriente');
 
       break;
     case 'CNORTENF':
-      this.aplicaTarifa.CNORTENF = !this.aplicaTarifa.CNORTENF
-      if (this.aplicaTarifa.CNORTENF){
-        aplica = 1;
-      }
+      // this.aplicaTarifa.CNORTENF = !this.aplicaTarifa.CNORTENF
+      // if (this.aplicaTarifa.CNORTENF){
+      //   aplica = 1;
+      // }
 
-      for (let t of this.newTransitos){
-        t.aplicaTarifa = aplica;
-      }
+      // for (let t of this.newTransitos){
+      //   t.aplicaTarifa = aplica;
+      // }
+      this.aplicaFijo('Costanera norte siempre aplica, excepto eje nor oriente');
+
 
       break;
     case 'VSUR':
@@ -541,6 +560,16 @@ error(texto:string){
   Swal.fire({
     icon: 'warning',
     title: 'Epaa ojo',
+    text: texto
+  })
+  this.newTransitos = [];
+  this.loading2     = false;
+}
+
+aplicaFijo(texto:string){
+  Swal.fire({
+    icon: 'warning',
+    title: 'No se puede cambiar',
     text: texto
   })
   this.newTransitos = [];

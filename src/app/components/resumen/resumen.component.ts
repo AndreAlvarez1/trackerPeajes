@@ -138,7 +138,7 @@ export class ResumenComponent implements OnInit {
                                 fecha: d.fecha,
                                 hora: d.hora,
                                 autopista: d.autopista,
-                                tarifaAplicada: d.tarifaAplicada
+                                tarifa: d.tarifaAplicada
                             }
         exportar.push(newRegistro);
     }
