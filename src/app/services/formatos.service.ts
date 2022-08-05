@@ -272,7 +272,7 @@ export class FormatosService {
           transito.eje           = dato.Sentido;
           transito.fecha         = this.modificarFecha3(dato.Fecha);
           transito.hora          = dato.Hora;
-          transito.monto         = Number(dato.Valor)
+          transito.monto         = Number(dato.Valor.replace(/,/g, '.'));
           transitos.push(transito);
         }
 
