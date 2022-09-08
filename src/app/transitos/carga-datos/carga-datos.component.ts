@@ -35,7 +35,8 @@ export class CargaDatosComponent implements OnInit {
                             VNORTE: true,
                             VNORTENF: true,
                             RMAIPO: true,
-                            STGOLAMPA: true
+                            STGOLAMPA: true,
+                            VORIENTE: true
                         }
 
 
@@ -220,6 +221,8 @@ tojson2(datos:any, autopista:string){
       }
       break;
    
+
+   
       case 'RMAIPO': 
         this.autopista       = 'Ruta Maipo';
         const transitos3:any = this.formatos.RMAIPO(datos, this.params.user.companyId);
@@ -241,6 +244,18 @@ tojson2(datos:any, autopista:string){
           this.verificarRepetidos(transitos4, this.aplicaTarifa.STGOLAMPA, 'STGOLAMPA');
         }
         break;
+
+        case 'VORIENTE':  // Vespucio No
+        this.autopista       = 'Vespucio Norte No Facturados';
+        const transitos5:any = this.formatos.VORIENTE(datos, this.params.user.companyId);
+        this.tipo = 'ambos'
+          if (transitos5 == 'error'){
+            this.error('No es el formato de excel que corresponde');
+          } else {
+            this.verificarRepetidosAmbos(transitos5, this.aplicaTarifa.VORIENTE);
+          }
+        break;
+
  
     }
 }
@@ -447,14 +462,17 @@ aplicarTarifa(tipo:string){
         t.aplicaTarifa = aplica;
       }
       break;
+
     case 'RMAIPO':
       this.aplicaTarifa.RMAIPO = !this.aplicaTarifa.RMAIPO
       if (this.aplicaTarifa.RMAIPO){
         aplica = 1;
       }
-
-      for (let t of this.newTransitos){
-        t.aplicaTarifa = aplica;
+    break
+    case 'VORIENTE':
+      this.aplicaTarifa.VORIENTE = !this.aplicaTarifa.VORIENTE
+      if (this.aplicaTarifa.VORIENTE){
+        aplica = 1;
       }
       break;
 

@@ -317,6 +317,42 @@ export class FormatosService {
     return transitos;
   }
 
+  VORIENTE(resultados:any, companyId:any){
+    console.log('VORIENTE', resultados);
+    const transitos:any[] = [];
+
+    let i = 0;
+  
+    for (let dato of resultados){
+      console.log('dato', dato, 'Portico', dato['Portico Entrada']);
+       //Valido formato
+      if (i < 1) {
+        if(dato['Portico Entrada'] == undefined){
+          return 'error';
+        }
+      }
+
+
+          let transito = new TransitoModel();
+          transito.autopistaId   = 7
+          transito.companyId     = companyId;
+          transito.patente       = dato.Patente.replace(/·/g, '');
+          transito.portico       = dato['Portico Entrada'];
+          transito.eje           = dato['Portico Salida'];
+          transito.fecha         = this.modificarFecha2(dato['Fecha Entrada']);
+          transito.hora          = this.modificarHora(dato['Fecha Entrada']);
+          transito.monto         = Number(dato.Tarifa)
+          transito.estado        = 'facturado';
+          if (dato.Estado != 'Facturada'){
+              transito.estado     = 'noFacturado';
+            }
+          transitos.push(transito);
+        
+      i++;
+    }
+    return transitos;
+  }
+
 
 
   STGOLAMPA(resultados:any, companyId:any){
