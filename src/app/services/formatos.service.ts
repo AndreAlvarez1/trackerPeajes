@@ -400,6 +400,45 @@ export class FormatosService {
 
 
 
+  RPASS(resultados:any, companyId:any){
+    console.log('RPASS', resultados);
+    const transitos:any[] = [];
+
+    let i = 0;
+  
+    for (let dato of resultados){
+       //Valido formato
+      if (i < 1) {
+        if(dato.Punto_Cobro == undefined){
+          return 'error';
+        }
+      }
+
+          let transito = new TransitoModel();
+          transito.autopistaId   = 8
+          transito.companyId     = companyId;
+          transito.patente       = dato.Patente;
+          transito.portico       = dato.Punto_Cobro;
+          transito.eje           = dato.Punto_Cobro;
+          transito.fecha         = this.modificarFecha(dato.Fecha);
+          transito.hora          = dato.Hora
+          transito.monto         = Number(dato.Monto.replace(' ', '').replace('$','').replace('.',''));
+          transito.estado        = 'facturado';
+          if (dato.Facturado == 'False'){
+              transito.estado     = 'noFacturado';
+            }
+          transitos.push(transito);
+        
+      i++;
+    }
+    return transitos;
+  }
+
+
+
+
+
+
 getFirstDayOfMonth(year:any, month:any) {
   return new Date(year, month, 1);
 }

@@ -36,7 +36,8 @@ export class CargaDatosComponent implements OnInit {
                             VNORTENF: true,
                             RMAIPO: true,
                             STGOLAMPA: true,
-                            VORIENTE: true
+                            VORIENTE: true,
+                            RPASS: false,
                         }
 
 
@@ -56,6 +57,7 @@ export class CargaDatosComponent implements OnInit {
     console.log('No facturados', this.noFacturados);
     console.log('news', this.newTransitos);
   }
+
   getFacturados(){
     this.loading      = true;
     this.newTransitos = [];
@@ -190,6 +192,8 @@ tojson(csvData:any, autopista:string){
             }
             break;
             
+      
+            
   
   
         }
@@ -254,6 +258,17 @@ tojson2(datos:any, autopista:string){
           } else {
             this.verificarRepetidosAmbos(transitos5, this.aplicaTarifa.VORIENTE);
           }
+        break;
+
+        case 'RPASS':  // Ruta PAss
+        this.autopista    = 'Ruta pass';
+        const transitos6:any = this.formatos.RPASS(datos, this.params.user.companyId);
+        this.tipo = 'ambos'
+        if (transitos6 == 'error'){
+          this.error('No es el formato de excel que corresponde');
+        } else {
+          this.verificarRepetidosAmbos(transitos6, this.aplicaTarifa.RPASS);
+        }
         break;
 
  
@@ -365,6 +380,9 @@ verificarRepetidosAmbos(transitos:any, aplicaTarifa:boolean){
   this.loading2     = false;
   console.log('newtransitos', this.newTransitos);
 }
+
+
+
 
 aplicarTarifa(tipo:string){
 

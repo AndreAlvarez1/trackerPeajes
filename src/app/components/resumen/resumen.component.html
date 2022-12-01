@@ -82,7 +82,7 @@
 
 <div *ngIf="transitos.length > 0 && loading2 == false" class="row cifras bgGreen animate__animated animate__fadeIn">
     <div class="col-12 col-md-4">
-        <h2><i class="fa-solid fa-sack-dollar"></i> Total $ {{total | number}}</h2>
+        <h2><i class="fa-solid fa-sack-dollar"></i> Total $ {{total | number: '1.0-0'}}</h2>
         <p><i class="fa-solid fa-car"></i> Transitos: {{transitos.length}}</p>
     </div>
     

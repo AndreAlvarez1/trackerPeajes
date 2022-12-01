@@ -37,6 +37,7 @@ export class FacturadosComponent implements OnInit {
     this.loading  = true;
     this.conex.getDatos('/generales/autopista')
           .subscribe( (resp:any)=> {
+            console.log('autopistas', resp)
             for (let a of resp['datos']){
               a.selected = true;
               this.autopistas.push(a);
@@ -85,6 +86,7 @@ export class FacturadosComponent implements OnInit {
     this.loading2 = true;
 
     console.log('a',a)
+
     if (a.id == 0){
       let seleccion = true;
       if (a.selected){
@@ -99,8 +101,8 @@ export class FacturadosComponent implements OnInit {
     }
 
     //para que se marque o desmarque solo el "todas"
+    this.autopistas[0].selected = true;
     for (let a of this.autopistas){
-      this.autopistas[0].selected = true;
       if (a.selected == false){
         this.autopistas[0].selected = false;
       }
