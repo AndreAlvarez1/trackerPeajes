@@ -15,6 +15,7 @@ import { LoadingComponent } from './shared/loading/loading.component';
 import { FilterPipe } from './pipes/filter.pipe';
 import { ResumenComponent } from './components/resumen/resumen.component';
 import { LimpiarBdComponent } from './transitos/limpiar-bd/limpiar-bd.component';
+import { TodosComponent } from './transitos/todos/todos.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { LimpiarBdComponent } from './transitos/limpiar-bd/limpiar-bd.component'
     LoadingComponent,
     FilterPipe,
     ResumenComponent,
-    LimpiarBdComponent
+    LimpiarBdComponent,
+    TodosComponent
   ],
   imports: [
     BrowserModule,
