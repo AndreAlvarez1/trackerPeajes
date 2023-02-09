@@ -321,6 +321,8 @@ export class FormatosService {
     console.log('VORIENTE', resultados);
     const transitos:any[] = [];
 
+
+
     let i = 0;
   
     for (let dato of resultados){
@@ -427,6 +429,56 @@ export class FormatosService {
           if (dato.Facturado == 'False'){
               transito.estado     = 'noFacturado';
             }
+          transitos.push(transito);
+        
+      i++;
+    }
+    return transitos;
+  }
+
+  SURVIAS(resultados:any, companyId:any){
+    console.log('SURVIAS', resultados);
+    const transitos:any[] = [];
+
+    let i = 0;
+  
+    let whitespace = new RegExp(/\s/g);
+    
+    let lo = resultados.map((entry:any) => {
+      let modified:any = {};
+      Object.keys(entry).forEach((key) => {
+        let value = entry[key];
+        key = key
+          .toLowerCase()
+          .replace(whitespace, "");
+        modified[key] = value;
+      });
+      return modified;
+    });
+
+    console.log('lol', lo);
+
+    for (let dato of lo){
+
+       //Valido formato
+      if (i < 1) {
+        if(dato.categoría == undefined){
+          return 'error';
+        }
+      }
+
+      console.log('portico', dato[0])
+
+          let transito = new TransitoModel();
+          transito.autopistaId   = 9
+          transito.companyId     = companyId;
+          transito.patente       = dato.patente;
+          transito.portico       = dato.puntocobro;
+          transito.eje           = dato.puntocobro;
+          transito.fecha         = this.modificarFecha(dato.fecha);
+          transito.hora          = dato.hora
+          transito.monto         = Number(dato.monto);
+          transito.estado        = 'facturado';
           transitos.push(transito);
         
       i++;

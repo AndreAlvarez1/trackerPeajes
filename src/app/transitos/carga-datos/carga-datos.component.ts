@@ -38,6 +38,7 @@ export class CargaDatosComponent implements OnInit {
                             STGOLAMPA: true,
                             VORIENTE: true,
                             RPASS: false,
+                            SURVIAS: false,
                         }
 
 
@@ -82,6 +83,7 @@ export class CargaDatosComponent implements OnInit {
 
     console.log('event xlsx', event)
     const file= event.target.files[0];     
+    console.log('aca', event.target.files[0]);
     let fileReader = new FileReader();    
     fileReader.readAsArrayBuffer(file);     
     fileReader.onload = (e) => {    
@@ -268,6 +270,17 @@ tojson2(datos:any, autopista:string){
           this.error('No es el formato de excel que corresponde');
         } else {
           this.verificarRepetidosAmbos(transitos6, this.aplicaTarifa.RPASS);
+        }
+        break;
+   
+        case 'SURVIAS':  
+        this.autopista    = 'Survias';
+        const transitos7:any = this.formatos.SURVIAS(datos, this.params.user.companyId);
+        this.tipo = 'facturados'
+        if (transitos7 == 'error'){
+          this.error('No es el formato de excel que corresponde');
+        } else {
+          this.verificarRepetidosAmbos(transitos7, this.aplicaTarifa.SURVIAS);
         }
         break;
 
@@ -497,6 +510,17 @@ aplicarTarifa(tipo:string){
     case 'STGOLAMPA':
       this.aplicaTarifa.STGOLAMPA = !this.aplicaTarifa.STGOLAMPA
       if (this.aplicaTarifa.STGOLAMPA){
+        aplica = 1;
+      }
+
+      for (let t of this.newTransitos){
+        t.aplicaTarifa = aplica;
+      }
+      break;
+
+    case 'SURVIAS':
+      this.aplicaTarifa.SURVIAS = !this.aplicaTarifa.SURVIAS
+      if (this.aplicaTarifa.SURVIAS){
         aplica = 1;
       }
 
