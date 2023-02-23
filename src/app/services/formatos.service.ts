@@ -382,6 +382,9 @@ export class FormatosService {
           if (dato.__EMPTY_4 == undefined){
             // console.log('ES RESUMEN DE PAGO!', dato);
           } else {
+
+            const numeroSinComas = dato.__EMPTY_18.replace('.', '')
+
             let transito = new TransitoModel();
             transito.autopistaId   = 6
             transito.companyId     = companyId;
@@ -390,7 +393,7 @@ export class FormatosService {
             transito.eje           = '';
             transito.fecha         = this.modificarFecha3(dato.__EMPTY_4);
             transito.hora          = dato.__EMPTY_6;
-            transito.monto         = Number(dato.__EMPTY_18);
+            transito.monto         = Number(numeroSinComas);
             transitos.push(transito);          
         }
 
