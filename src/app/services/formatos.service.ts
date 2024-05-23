@@ -419,6 +419,10 @@ export class FormatosService {
         }
       }
 
+      let cleanedMonto = dato.Monto.replace('$', '').trim();
+          cleanedMonto = cleanedMonto.replace(/\./g, '');
+          cleanedMonto = cleanedMonto.replace(',', '.');
+
           let transito = new TransitoModel();
           transito.autopistaId   = 8
           transito.companyId     = companyId;
@@ -427,7 +431,7 @@ export class FormatosService {
           transito.eje           = dato.Punto_Cobro;
           transito.fecha         = this.modificarFecha(dato.Fecha);
           transito.hora          = dato.Hora
-          transito.monto         = Number(dato.Monto.replace(' ', '').replace('$','').replace('.',''));
+          transito.monto         = Number(cleanedMonto);
           transito.estado        = 'facturado';
           if (dato.Facturado == 'False'){
               transito.estado     = 'noFacturado';
