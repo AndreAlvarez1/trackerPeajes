@@ -6,6 +6,7 @@ import { FormatosService } from 'src/app/services/formatos.service';
 import * as XLSX from 'xlsx';
 
 import Swal from 'sweetalert2'
+import { NgForm } from '@angular/forms';
 
 
 @Component({
@@ -21,6 +22,14 @@ export class CargaDatosComponent implements OnInit {
   newTransitos:any    = [];
   autopista           = '';
   tipo                = '';
+  
+  date                = new Date();
+  // firstDay         = new Date(this.date.getFullYear(), this.date.getMonth(), 1).toISOString();
+  firstDay            = new Date(this.date.getFullYear(), this.date.getMonth() - 6, 1).toISOString();
+  lastDay             = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0).toISOString();
+  textoLoading        = 'Cargando Facturados'
+
+  
 
   facturados:any[]    = [];
   noFacturados:any[]  = [];
@@ -49,8 +58,11 @@ export class CargaDatosComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.firstDay = this.formatos.modificarFecha2(this.firstDay);
+    this.lastDay  = this.formatos.modificarFecha2(this.lastDay);
     this.getFacturados();
   }
+
 
 
   info(){
@@ -59,10 +71,29 @@ export class CargaDatosComponent implements OnInit {
     console.log('news', this.newTransitos);
   }
 
+
+  filtrarFecha(f:NgForm) {
+    this.loading2 = true;
+    // Defino los locales que queremos para desplegar los informes
+    this.newTransitos = [];
+
+    console.log("filtrar", f.value);
+
+    const fechaIni = f.value["fechaIni"]
+    const fechaFin = f.value["fechaFin"]
+    this.getFacturados();
+
+
+    }
+
+
+
+
   getFacturados(){
     this.loading      = true;
     this.newTransitos = [];
-    this.conex.getDatos('/generales/transitosF')
+    this.conex.getDatos(`/transitos/transitosF/${this.firstDay}/${this.lastDay}`)
+    // this.conex.getDatos('/generales/transitosF')
               .subscribe( (resp:any) => {
                      this.facturados = resp['datos'];
                      this.getNoFacturados();
@@ -70,8 +101,9 @@ export class CargaDatosComponent implements OnInit {
   }
  
   getNoFacturados(){
-    this.conex.getDatos('/generales/transitosNF')
-              .subscribe( (resp:any) => { 
+    this.textoLoading = 'Cargando no facturados'
+    this.conex.getDatos(`/transitos/transitosNF/${this.firstDay}/${this.lastDay}`)
+    .subscribe( (resp:any) => { 
                   this.noFacturados = resp['datos']; 
                   this.loading = false; 
                   this.info();

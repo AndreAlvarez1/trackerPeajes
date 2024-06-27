@@ -1,12 +1,51 @@
 <div class="row bgGris2"  style="margin:0">
-    <div class="col-12" style="padding:60px 20px">
+    <div class="col-12" style="padding:20px">
         <h1 (click)="info()">Carga Excels</h1>
     </div>
-    <hr>
 </div>
 
 
+<div class="row bgAmarillo pad20" style="margin:0">
+    <div class="col-12">
+        <h1>Rango de fechas</h1>
+        <form (ngSubmit)="filtrarFecha( f )" #f="ngForm" >
 
+            <div class="row ">
+                <div class="col-12 col-md-3">
+                    <div class="form-group">
+                        <label>Fecha Inicial</label>
+                        <input type="date" class="form-control" placeholder="Inicio Periodo" [(ngModel)]="firstDay" name="fechaIni" required>
+                    </div>
+                </div>
+                <div class="col-12 col-md-3">
+                    <div class="form-group">
+                        <label>Fecha Final</label>
+                        <input type="date" class="form-control" placeholder="Fin Periodo" [(ngModel)]="lastDay" name="fechaFin" required>
+                    </div>
+                </div>
+        
+                <div class="col-12 col-md-6">
+                    <div class="form-group text-left">
+                        <button type="submit" class="btn btn-outline-light botonMargen">
+                         <i class="fa fa-search"></i>   
+                         </button>
+
+                         <button class="btn btn-outline-light botonMargen" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFiltros" aria-expanded="false" aria-controls="collapseFiltros">
+                            Filtros
+                          </button>
+                    </div>
+                </div>
+            
+              
+
+
+
+            </div>
+        
+        </form>
+    </div>
+
+</div>
 
 <div class="row bgGris2 pad20"  style="margin:0">
     <div class="col-12 col-md-4">

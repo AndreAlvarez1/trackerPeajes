@@ -15,6 +15,7 @@ export class ConectorService {
               private router: Router) { }
 
    getDatos( ruta:string ) {
+    console.log(`${this.url + ruta} `);
       return this.http.get( this.url + ruta );
    }
             
