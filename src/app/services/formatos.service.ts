@@ -402,6 +402,51 @@ export class FormatosService {
     }
     return transitos;
   }
+  
+  STGOLAMPANF(resultados:any, companyId:any){
+
+    console.log('resultados stgo lampa no facturados', resultados);
+
+    const transitos:any[] = [];
+    
+    let encabezado = true;
+      
+    let i = 0;
+
+    for (let dato of resultados){
+
+      // VALIDAR FORMATO
+      if (i == 0){
+
+        console.log('aca __EMPTY', dato.__EMPTY);
+        if (dato.__EMPTY != 'Fecha'){
+          return 'error';
+        }
+      }
+
+      i++;
+
+        if (dato.__EMPTY == 'Fecha'){
+          continue;
+        }
+
+        const primeraClave = Object.keys(dato)[0];
+        console.log('primera clave', primeraClave)
+
+            let transito           = new TransitoModel();
+            transito.autopistaId   = 6
+            transito.companyId     = companyId;
+            transito.patente       = primeraClave;
+            transito.portico       = dato.__EMPTY_2;
+            transito.eje           = '';
+            transito.fecha         = this.modificarFecha3(dato.__EMPTY);
+            transito.hora          = dato.__EMPTY_1;
+            transito.monto         = dato.__EMPTY_3;
+            transitos.push(transito);          
+        
+    }
+    return transitos;
+  }
 
 
 

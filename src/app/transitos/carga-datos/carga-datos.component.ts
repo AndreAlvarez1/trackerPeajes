@@ -45,6 +45,7 @@ export class CargaDatosComponent implements OnInit {
                             VNORTENF: true,
                             RMAIPO: true,
                             STGOLAMPA: true,
+                            STGOLAMPANF:true,
                             VORIENTE: true,
                             RPASS: false,
                             SURVIAS: false,
@@ -280,6 +281,17 @@ tojson2(datos:any, autopista:string){
           this.error('No es el formato de excel que corresponde');
         } else {
           this.verificarRepetidos(transitos4, this.aplicaTarifa.STGOLAMPA, 'STGOLAMPA');
+        }
+        break;
+      
+        case 'STGOLAMPANF': 
+        this.autopista    = 'Santiago Lampa Facturados';
+        const transitos8:any = this.formatos.STGOLAMPANF(datos, this.params.user.companyId);
+        this.tipo = 'No facturados'
+        if (transitos8 == 'error'){
+          this.error('No es el formato de excel que corresponde');
+        } else {
+          this.verificarRepetidos(transitos8, this.aplicaTarifa.STGOLAMPANF, 'STGOLAMPANF');
         }
         break;
 
