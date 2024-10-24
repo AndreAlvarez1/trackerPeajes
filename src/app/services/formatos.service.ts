@@ -430,13 +430,12 @@ export class FormatosService {
           continue;
         }
 
-        const primeraClave = Object.keys(dato)[0];
-        console.log('primera clave', primeraClave)
+            const primeraClave = Object.keys(dato)[0];
 
             let transito           = new TransitoModel();
             transito.autopistaId   = 6
             transito.companyId     = companyId;
-            transito.patente       = primeraClave;
+            transito.patente       = dato[primeraClave];;
             transito.portico       = dato.__EMPTY_2;
             transito.eje           = '';
             transito.fecha         = this.modificarFecha3(dato.__EMPTY);
