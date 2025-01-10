@@ -312,6 +312,27 @@
 
         </div>
         <!-- Fin Ruta Pass -->
+      
+        <div #canopsa>
+
+            <h2>Canopsa</h2>
+            <div class="row">
+                <div class="col-8 col-md-7">
+                    <label>No Facturados</label>
+                    <input class="form-control" type="file" (change)="addXlsx($event, 'CANOPSA')">
+                </div>
+                <div class="col">
+                    
+                    <!-- <p style="margin-top:32px" class="pointer" (click)="aplicarTarifa('CANOPSA')">
+                        <i [ngClass]="aplicaTarifa.CANOPSA ? 'fa-regular fa-square-check' : 'fa-regular fa-square'"></i> 
+                        Aplica Tarifa 
+                    </p> -->
+            
+                </div>
+            </div>
+
+        </div>
+        <!-- Fin Ruta Pass -->
 
 
     </div>

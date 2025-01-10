@@ -536,7 +536,39 @@ export class FormatosService {
     }
     return transitos;
   }
+  
+  CANOPSA(resultados:any, companyId:any){
+    console.log('CANOPSA', resultados);
+    const transitos:any[] = [];
 
+    let i = 0;
+  
+    for (let dato of resultados){
+       //Valido formato
+       console.log('dato', dato);
+      if (i < 1) {
+        if(dato.Estado == undefined){
+          return 'error';
+        }
+      }
+
+
+          let transito = new TransitoModel();
+          transito.autopistaId   = 10
+          transito.companyId     = companyId;
+          transito.patente       = dato.Patente;
+          transito.portico       = dato["Pórtico"];
+          transito.eje           = dato["Pórtico"];
+          transito.fecha         = dato["Fecha de Tránsito"].substring(0, 10);
+          transito.hora          = dato["Fecha de Tránsito"].substring(11, 16);
+          transito.monto         = dato.Tarifa_1;
+          transito.estado        = 'noFacturado';
+          transitos.push(transito);
+        
+      i++;
+    }
+    return transitos;
+  }
 
 
 

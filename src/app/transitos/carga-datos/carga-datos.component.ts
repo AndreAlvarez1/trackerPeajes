@@ -49,6 +49,7 @@ export class CargaDatosComponent implements OnInit {
                             VORIENTE: true,
                             RPASS: false,
                             SURVIAS: false,
+                            CANOPSA:false
                         }
 
 
@@ -225,8 +226,11 @@ tojson(csvData:any, autopista:string){
             } else {
               this.verificarRepetidosNF(transitos6, this.aplicaTarifa.VSURNF, 'VSURNF');
             }
+         
             break;
-            
+
+
+
       
             
   
@@ -327,6 +331,21 @@ tojson2(datos:any, autopista:string){
           this.verificarRepetidosAmbos(transitos7, this.aplicaTarifa.SURVIAS);
         }
         break;
+ 
+ 
+        case 'CANOPSA':  
+        console.log('es canopsa');
+        this.autopista    = 'CANOPSA';
+        const transitos9:any = this.formatos.CANOPSA(datos, this.params.user.companyId);
+        this.tipo = 'No facturados'
+        if (transitos9 == 'error'){
+          this.error('No es el formato de excel que corresponde');
+        } else {
+          this.verificarRepetidosAmbos(transitos9, this.aplicaTarifa.CANOPSA);
+        }
+        break;
+
+
 
  
     }
