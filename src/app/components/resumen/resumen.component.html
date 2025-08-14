@@ -81,7 +81,7 @@
 
 
 <div *ngIf="transitos.length > 0 && loading2 == false" class="row cifras bgGreen animate__animated animate__fadeIn">
-    <div class="col-12 col-md-4">
+    <div class="col-12 col-md-3">
         <h2><i class="fa-solid fa-sack-dollar"></i> Total $ {{total | number: '1.0-0'}}</h2>
         <p><i class="fa-solid fa-car"></i> Transitos: {{transitos.length}}</p>
     </div>
@@ -96,6 +96,34 @@
         <p style="margin-bottom:0; color:rgba(0,0,0,0)">.</p>
         <button class="btn w-100 btn-success" (click)="exportAsXLSX(transitos, 'Resumen'  )"><i class="fas fa-file-excel"></i> Exportar a Excel</button>
     </div>
+
+    <div class="col-12 col-md-3">
+        <p style="margin-bottom:0; color:rgba(0,0,0,0)">.</p>
+        <button class="btn w-100 btn-info" (click)="preguntarDatosCliente()"><i class="fas fa-file-pdf"></i> Exportar a PDF</button>
+    </div>
+</div>
+
+
+<div *ngIf="transitos.length > 0 && loading2 == false" class="resumen bg-secondary row animate__animated animate__fadeIn" style="margin:0">
+    <div class="col-12 col-md-8 offset-md-2">
+        <h2>Resumen</h2>
+               <table class="table table-striped table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Autopista</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody  class="animated fadeIn">
+                <tr class="pointer" *ngFor="let c of resumen ;  index as i"  >
+                    <td>{{ i + 1 }}</td>
+                    <td>{{c.autopista}}</td>
+                    <td>$ {{c.total | number:'1.0-0' }}</td>                              
+                </tr>
+            </tbody>
+        </table>
+    </div>    
 </div>
 
 <div *ngIf="transitos.length > 0 && loading2 == false" class="row animate__animated animate__fadeIn" style="margin:0">

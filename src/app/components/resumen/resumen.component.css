@@ -12,3 +12,16 @@ h1{
     font-weight: 700;
     margin-bottom:0;
 }
+
+.resumen{
+    padding:20px;
+    color:white;
+}
+
+.resumen td{
+    color:white;
+}
+
+.resumen th{
+    color:white;
+}
