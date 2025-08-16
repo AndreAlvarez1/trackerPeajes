@@ -9,12 +9,18 @@
                     <div class="form-group">
                         <label>Fecha Inicial</label>
                         <input type="date" class="form-control" placeholder="Inicio Periodo" [(ngModel)]="firstDay" name="fechaIni" required>
+                        <label>Hora inicio:</label>
+                        <input type="time"  class="form-control" [(ngModel)]="horaInicio" name="horaInicio">
                     </div>
+
+                    
                 </div>
                 <div class="col-12 col-md-3">
                     <div class="form-group">
                         <label>Fecha Final</label>
                         <input type="date" class="form-control" placeholder="Fin Periodo" [(ngModel)]="lastDay" name="fechaFin" required>
+                        <label>Hora inicio:</label>
+                        <input type="time"  class="form-control" [(ngModel)]="horaFin" name="horaFin">
                     </div>
                 </div>
                

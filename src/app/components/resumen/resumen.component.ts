@@ -31,7 +31,11 @@ export class ResumenComponent implements OnInit {
   total               = 0;
 
   clientName: string = '';
-  contract: string = '';
+  contract: string   = '';
+  horaInicio: string = '';
+  horaFin: string = "";
+
+
 
 
 
@@ -57,6 +61,11 @@ export class ResumenComponent implements OnInit {
   }
 
   filtrarFecha(f:NgForm) {
+
+    console.log('horainicio', this.horaInicio);
+    console.log('horaFin', this.horaFin);
+
+
     if(this.patente.length < 6){
       this.error('Agrega una patente válida por favor');
       return;
@@ -93,11 +102,11 @@ export class ResumenComponent implements OnInit {
           for (let nf of resp['datos']){
             const existe = this.transitosAll.find( tra => tra.fecha == nf.fecha && tra.hora == nf.hora);
             if (!existe){
-              console.log('no está repetido', nf);
+              // console.log('no está repetido', nf);
               nf.facturado = false;
               this.transitosAll.push(nf) 
             } else {
-              console.log('repetido', existe);
+              // console.log('repetido', existe);
             }
 
           }
@@ -116,6 +125,14 @@ export class ResumenComponent implements OnInit {
     console.log('autopistas', this.autopistas);
 
     for (let t of this.transitosAll){
+
+      const dentroDeRango = this.validarRangoHora(t);
+      if ( !dentroDeRango){
+        console.log('me salto este');
+        continue;
+      }
+
+
       const existe = this.autopistas.find( aut => aut.id == t.autopistaId);
       t.autopista = existe.nombre;
       if (t.aplicaTarifa > 0){
@@ -130,12 +147,37 @@ export class ResumenComponent implements OnInit {
 
     console.log('transitos', this.transitos);
 
+
+
      this.resumen = this.calcResumen(this.transitos);
     console.log('resumen', this.resumen);
 
 
     this.loading2 = false;
 
+  }
+
+
+
+  validarRangoHora(t:any){
+
+    if (t.fecha == this.firstDay){
+      console.log('fecha inicial', t);
+      if (t.hora < this.horaInicio){
+        console.log('es previo a la hora')
+        return false
+      }
+    }
+   
+    if (t.fecha == this.lastDay){
+      console.log('fecha final', t);
+      if (t.hora > this.horaFin){
+        console.log('es posterior a la hora de entrega')
+        return false
+      }
+    }
+
+    return true;
   }
 
 
@@ -419,7 +461,7 @@ calcResumen(data:any){
     body: [
       ['Nombre Arrendatario', this.clientName || '-'],
       ['Patente', this.patente || '-'],
-      ['Período', `${fmtDMY(this.firstDay)} - ${fmtDMY(this.lastDay)}`],
+      ['Período', `${fmtDMY(this.firstDay)} | ${this.horaInicio} al ${fmtDMY(this.lastDay)} | ${this.horaFin}`],
       ['Total',  `${    fmtCLP(this.total)}` ]
 
     ],
