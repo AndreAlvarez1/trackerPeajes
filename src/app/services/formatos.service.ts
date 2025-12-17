@@ -487,6 +487,37 @@ export class FormatosService {
     return transitos;
   }
 
+  RUTASUR(resultados:any, companyId:any){
+    console.log('RUTASUR', resultados);
+    const transitos:any[] = [];
+
+    let i = 0;
+    for (let dato of resultados){
+       //Valido formato
+      if (i < 1) {
+        if(dato.puntoCobro == undefined){
+          return 'error';
+        }
+      }
+
+
+          let transito = new TransitoModel();
+          transito.autopistaId   = 11
+          transito.companyId     = companyId;
+          transito.patente       = dato.patente;
+          transito.portico       = dato.puntoCobro;
+          transito.eje           = dato.puntoCobro;
+          transito.fecha         = this.modificarFecha(dato.fecha);
+          transito.hora          = dato.hora
+          transito.monto         = dato.monto
+          transito.estado        = 'facturado';
+          transitos.push(transito);
+        
+      i++;
+    }
+    return transitos;
+  }
+
   SURVIAS(resultados:any, companyId:any){
     console.log('SURVIAS', resultados);
     const transitos:any[] = [];

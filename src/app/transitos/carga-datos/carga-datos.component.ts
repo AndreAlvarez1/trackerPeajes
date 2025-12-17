@@ -49,7 +49,8 @@ export class CargaDatosComponent implements OnInit {
                             VORIENTE: true,
                             RPASS: false,
                             SURVIAS: false,
-                            CANOPSA:false
+                            CANOPSA:false,
+                            RUTASUR: false
                         }
 
 
@@ -329,6 +330,19 @@ tojson2(datos:any, autopista:string){
           this.error('No es el formato de excel que corresponde');
         } else {
           this.verificarRepetidosAmbos(transitos7, this.aplicaTarifa.SURVIAS);
+        }
+        break;
+   
+        case 'RUTASUR':  
+        console.log('ruta sur');
+        this.autopista    = 'RUTASUR';
+        const transito11:any = this.formatos.RUTASUR(datos, this.params.user.companyId);
+        console.log('transito11', transito11);
+        this.tipo = 'facturados'
+        if (transito11 == 'error'){
+          this.error('No es el formato de excel que corresponde');
+        } else {
+          this.verificarRepetidosAmbos(transito11, this.aplicaTarifa.RUTASUR);
         }
         break;
  

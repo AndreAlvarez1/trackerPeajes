@@ -335,6 +335,29 @@
         <!-- Fin Ruta Pass -->
 
 
+          <div #rutasur>
+
+            <h2>Ruta Sur</h2>
+            <div class="row">
+                <div class="col-8 col-md-7">
+                    <label>Facturados</label>
+                    <input class="form-control" type="file" (change)="addXlsx($event, 'RUTASUR')">
+                </div>
+                <!-- <div class="col">
+                    
+                    <p style="margin-top:32px" class="pointer" (click)="aplicarTarifa('RUTASUR')">
+                        <i [ngClass]="aplicaTarifa.RUTASUR ? 'fa-regular fa-square-check' : 'fa-regular fa-square'"></i> 
+                        Aplica Tarifa 
+                    </p>
+            
+                </div> -->
+            </div>
+
+        </div>
+        <!-- Fin Ruta Pass -->
+
+
+
     </div>
 
 
