@@ -509,8 +509,13 @@ export class FormatosService {
           transito.eje           = dato.puntoCobro;
           transito.fecha         = this.modificarFecha(dato.fecha);
           transito.hora          = dato.hora
-          transito.monto         = dato.monto
           transito.estado        = 'facturado';
+          if (!dato.monto){
+            console.log('VIENE VACIO')
+            transito.monto = 0
+          } else {
+            transito.monto         = dato.monto
+          }
           transitos.push(transito);
         
       i++;
