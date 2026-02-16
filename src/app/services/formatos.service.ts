@@ -631,10 +631,10 @@ export class FormatosService {
           transito.patente       = dato["Patente"];
           transito.portico       = dato["Pórtico"];
           transito.eje           = dato["Fecha de Tránsito"];
-          transito.fecha         = dato["Estado"].substring(0, 10);
+          transito.fecha         = this.modificarFecha(dato["Estado"].substring(0, 10));
           transito.hora          = dato["Estado"].substring(11, 16);
-          transito.monto         = dato["Tarifa_1"];
-          transito.estado        = 'Facturado';
+          transito.monto         = Number(dato["Tarifa_1"].replace(/\./g, ''));
+          transito.estado        = 'facturado';
           transitos.push(transito);
         
       i++;
