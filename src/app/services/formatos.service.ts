@@ -607,6 +607,42 @@ export class FormatosService {
   }
 
 
+  
+  NAHUELBUTA(resultados:any, companyId:any){
+    console.log('NAHUELBUTA DATOS', resultados);
+    const transitos:any[] = [];
+
+    let i = 0;
+  
+    for (let dato of resultados){
+       //Valido formato
+       console.log('dato', dato);
+       console.log('limite', dato['Fecha Limite Pago']);
+      if (i < 1) {
+        if(dato['Fecha Limite Pago'] == undefined){
+          return 'error';
+        }
+      }
+
+
+          let transito = new TransitoModel();
+          transito.autopistaId   = 12
+          transito.companyId     = companyId;
+          transito.patente       = dato["Patente"];
+          transito.portico       = dato["Pórtico"];
+          transito.eje           = dato["Fecha de Tránsito"];
+          transito.fecha         = dato["Estado"].substring(0, 10);
+          transito.hora          = dato["Estado"].substring(11, 16);
+          transito.monto         = dato["Tarifa_1"];
+          transito.estado        = 'Facturado';
+          transitos.push(transito);
+        
+      i++;
+    }
+    return transitos;
+  }
+
+
 
 
 

@@ -50,7 +50,8 @@ export class CargaDatosComponent implements OnInit {
                             RPASS: false,
                             SURVIAS: false,
                             CANOPSA:false,
-                            RUTASUR: false
+                            RUTASUR: false,
+                            NAHUELBUTA: false
                         }
 
 
@@ -356,6 +357,18 @@ tojson2(datos:any, autopista:string){
           this.error('No es el formato de excel que corresponde');
         } else {
           this.verificarRepetidosAmbos(transitos9, this.aplicaTarifa.CANOPSA);
+        }
+        break;
+       
+        case 'NAHUELBUTA':  
+        console.log('es NAHUELBUTA');
+        this.autopista    = 'NAHUELBUTA';
+        const transitos12:any = this.formatos.NAHUELBUTA(datos, this.params.user.companyId);
+        this.tipo = 'facturados'
+        if (transitos12 == 'error'){
+          this.error('No es el formato de excel que corresponde');
+        } else {
+          this.verificarRepetidosAmbos(transitos12, this.aplicaTarifa.NAHUELBUTA);
         }
         break;
 
